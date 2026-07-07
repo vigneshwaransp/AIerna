@@ -240,8 +240,9 @@ export default function NotificationsCenter() {
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Alert Title</label>
+                  <label htmlFor="dispatchTitle" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Alert Title</label>
                   <input 
+                    id="dispatchTitle"
                     required 
                     value={newNotif.title} 
                     onChange={e => setNewNotif(p => ({ ...p, title: e.target.value }))}
@@ -252,8 +253,9 @@ export default function NotificationsCenter() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Dispatch Type</label>
+                    <label htmlFor="dispatchType" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Dispatch Type</label>
                     <select
+                      id="dispatchType"
                       value={newNotif.type}
                       onChange={e => setNewNotif(p => ({ ...p, type: e.target.value }))}
                       className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
@@ -262,8 +264,9 @@ export default function NotificationsCenter() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Recipient Role</label>
+                    <label htmlFor="dispatchRole" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Recipient Role</label>
                     <select
+                      id="dispatchRole"
                       value={newNotif.recipient_role}
                       onChange={e => setNewNotif(p => ({ ...p, recipient_role: e.target.value }))}
                       className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
@@ -276,8 +279,9 @@ export default function NotificationsCenter() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Alert Message</label>
+                  <label htmlFor="dispatchMessage" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Alert Message</label>
                   <textarea 
+                    id="dispatchMessage"
                     required 
                     value={newNotif.message} 
                     onChange={e => setNewNotif(p => ({ ...p, message: e.target.value }))}

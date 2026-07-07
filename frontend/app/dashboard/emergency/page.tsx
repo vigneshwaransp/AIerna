@@ -245,26 +245,32 @@ export default function EmergencyDashboardPage() {
               <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider">File Rapid Alert</h3>
               <div className="grid grid-cols-2 gap-2">
                 <select 
+                  id="emerCategory"
                   value={newIncident.category} 
                   onChange={e => setNewIncident(p => ({ ...p, category: e.target.value }))}
+                  aria-label="Alert Category"
                   className="px-2 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
                 >
                   {['Medical', 'Fire', 'Security', 'Evacuation'].map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
                 <input 
+                  id="emerLocation"
                   required
                   value={newIncident.location_zone} 
                   onChange={e => setNewIncident(p => ({ ...p, location_zone: e.target.value }))}
                   placeholder="Zone Location"
+                  aria-label="Zone Location"
                   className="px-2 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none placeholder:text-slate-400"
                 />
               </div>
               <textarea 
+                id="emerDesc"
                 required
                 value={newIncident.description}
                 onChange={e => setNewIncident(p => ({ ...p, description: e.target.value }))}
                 rows={2}
                 placeholder="Alert description details..."
+                aria-label="Alert details"
                 className="w-full px-2 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none placeholder:text-slate-400 resize-none"
               />
               <button type="submit" className="w-full py-2.5 bg-[#FF6B6B] border-4 border-black text-white text-xs font-black uppercase shadow-neo-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer flex items-center justify-center gap-1.5"
@@ -302,6 +308,7 @@ export default function EmergencyDashboardPage() {
                             type="checkbox" 
                             checked={checklist[`${selectedIncident.id}-${idx}`] || false}
                             onChange={e => setChecklist(p => ({ ...p, [`${selectedIncident.id}-${idx}`]: e.target.checked }))}
+                            aria-label={act}
                             className="mt-0.5 accent-black border-2 border-black" 
                           />
                           <p className={`text-xs font-bold ${checklist[`${selectedIncident.id}-${idx}`] ? 'text-slate-400 line-through' : 'text-black'}`}>

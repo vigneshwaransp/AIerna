@@ -306,8 +306,9 @@ export default function LostPersonPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Full Name</label>
+                    <label htmlFor="missingName" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Full Name</label>
                     <input 
+                      id="missingName"
                       required 
                       value={newPerson.name} 
                       onChange={e => setNewPerson(p => ({ ...p, name: e.target.value }))}
@@ -316,8 +317,9 @@ export default function LostPersonPage() {
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Age</label>
+                    <label htmlFor="missingAge" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Age</label>
                     <input 
+                      id="missingAge"
                       required 
                       type="number"
                       value={newPerson.age} 
@@ -328,8 +330,9 @@ export default function LostPersonPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Clothing Details</label>
+                  <label htmlFor="missingClothing" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Clothing Details</label>
                   <input 
+                    id="missingClothing"
                     required 
                     value={newPerson.clothing} 
                     onChange={e => setNewPerson(p => ({ ...p, clothing: e.target.value }))}
@@ -339,8 +342,9 @@ export default function LostPersonPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Last Seen Location</label>
+                  <label htmlFor="missingLocation" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Last Seen Location</label>
                   <select 
+                    id="missingLocation"
                     value={newPerson.last_seen_location}
                     onChange={e => setNewPerson(p => ({ ...p, last_seen_location: e.target.value }))}
                     className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
@@ -352,8 +356,9 @@ export default function LostPersonPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Physical Description</label>
+                  <label htmlFor="missingDesc" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Physical Description</label>
                   <textarea 
+                    id="missingDesc"
                     required 
                     value={newPerson.description} 
                     onChange={e => setNewPerson(p => ({ ...p, description: e.target.value }))}

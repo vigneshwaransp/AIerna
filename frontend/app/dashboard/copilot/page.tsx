@@ -191,11 +191,13 @@ export default function VolunteerCopilotPage() {
           {/* Input */}
           <div className="p-3 border-t-4 border-black bg-white flex gap-2">
             <input
+              id="copilotInput"
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') handleSend(input); }}
               placeholder="Ask the AI Copilot..."
+              aria-label="Ask the AI Copilot"
               className="flex-1 px-4 py-2.5 bg-white border-4 border-black text-xs font-bold text-black focus:outline-none focus:bg-[#FFD93D]"
             />
             <button

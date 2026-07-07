@@ -223,8 +223,9 @@ export default function LandingPage() {
 
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-black tracking-wider text-black mb-1">Username</label>
+                  <label htmlFor="username" className="block text-[10px] uppercase font-black tracking-wider text-black mb-1">Username</label>
                   <input
+                    id="username"
                     type="text"
                     required
                     value={username}
@@ -234,8 +235,9 @@ export default function LandingPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-black tracking-wider text-black mb-1">Password</label>
+                  <label htmlFor="password" className="block text-[10px] uppercase font-black tracking-wider text-black mb-1">Password</label>
                   <input
+                    id="password"
                     type="password"
                     required
                     value={password}

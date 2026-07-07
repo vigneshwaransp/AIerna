@@ -156,8 +156,9 @@ export default function SmartNavigationPage() {
               
               <div className="space-y-3">
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Origin Point</label>
+                  <label htmlFor="routeOrigin" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Origin Point</label>
                   <select 
+                    id="routeOrigin"
                     value={fromNode} 
                     onChange={e => setFromNode(e.target.value)}
                     className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
@@ -167,8 +168,9 @@ export default function SmartNavigationPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Destination Point</label>
+                  <label htmlFor="routeDestination" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Destination Point</label>
                   <select 
+                    id="routeDestination"
                     value={toNode} 
                     onChange={e => setToNode(e.target.value)}
                     className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"

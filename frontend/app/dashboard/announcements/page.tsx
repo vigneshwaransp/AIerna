@@ -148,7 +148,9 @@ export default function AnnouncementsCenter() {
               
               <form onSubmit={handleBroadcast} className="space-y-4">
                 <div>
+                  <label htmlFor="broadcastMessage" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Announcement Message</label>
                   <textarea
+                    id="broadcastMessage"
                     required
                     value={message}
                     onChange={e => setMessage(e.target.value)}
@@ -160,8 +162,9 @@ export default function AnnouncementsCenter() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Category</label>
+                    <label htmlFor="broadcastCategory" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Category</label>
                     <select
+                      id="broadcastCategory"
                       value={category}
                       onChange={e => setCategory(e.target.value)}
                       className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"
@@ -170,8 +173,9 @@ export default function AnnouncementsCenter() {
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 block mb-1">Target Audience</label>
+                    <label htmlFor="broadcastAudience" className="text-[10px] uppercase font-black text-slate-500 block mb-1">Target Audience</label>
                     <select
+                      id="broadcastAudience"
                       value={targetRole}
                       onChange={e => setTargetRole(e.target.value)}
                       className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none"

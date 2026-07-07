@@ -1,5 +1,6 @@
 import os
 import datetime
+import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -153,8 +154,13 @@ async def simulate_zone_crowd(zone_id: int, current_capacity: int, db: Session =
     db.commit()
     db.refresh(zone)
     
-    # Generate AI recommendation if congested
-    ai_advice = ai_engine.ai_generate_crowd_recommendation(zone.name, zone.current_capacity, zone.safe_capacity)
+    # Generate AI recommendation if congested in a separate thread
+    ai_advice = await asyncio.to_thread(
+        ai_engine.ai_generate_crowd_recommendation,
+        zone.name,
+        zone.current_capacity,
+        zone.safe_capacity
+    )
     
     # Broadcast telemetry update to all connected dashboard websockets
     telemetry_data = {
@@ -193,8 +199,9 @@ def get_incidents(db: Session = Depends(get_db)):
 
 @app.post("/api/incidents", response_model=IncidentResponse)
 async def create_incident(incident: IncidentCreate, db: Session = Depends(get_db)):
-    # Generate AI decision recommendations, nearest resources, and routes
-    ai_data = ai_engine.ai_generate_incident_support(
+    # Generate AI decision recommendations, nearest resources, and routes in a separate thread
+    ai_data = await asyncio.to_thread(
+        ai_engine.ai_generate_incident_support,
         category=incident.category,
         description=incident.description,
         zone=incident.location_zone
@@ -305,9 +312,13 @@ def get_announcements(db: Session = Depends(get_db)):
 
 @app.post("/api/announcements", response_model=AnnouncementResponse)
 async def create_announcement(ann: AnnouncementCreate, db: Session = Depends(get_db)):
-    # Generate multi-language translations for English, Hindi, Tamil, Telugu, Kannada, Malayalam, French, Japanese
+    # Generate multi-language translations in a separate thread
     target_langs = ["English", "Hindi", "Tamil", "Telugu", "Kannada", "Malayalam", "French", "Japanese"]
-    translations = ai_engine.ai_translate_announcement(ann.message, target_langs)
+    translations = await asyncio.to_thread(
+        ai_engine.ai_translate_announcement,
+        ann.message,
+        target_langs
+    )
     
     new_ann = Announcement(
         message=ann.message,
@@ -342,8 +353,9 @@ def get_lost_persons(db: Session = Depends(get_db)):
 
 @app.post("/api/lost-persons", response_model=LostPersonResponse)
 async def report_lost_person(person: LostPersonCreate, db: Session = Depends(get_db)):
-    # AI models generate initial search guidelines and sighting timelines
-    ai_search = ai_engine.ai_lost_person_match(
+    # AI models generate initial search guidelines and sighting timelines in a separate thread
+    ai_search = await asyncio.to_thread(
+        ai_engine.ai_lost_person_match,
         lost_desc=person.description,
         clothing=person.clothing,
         age=person.age,

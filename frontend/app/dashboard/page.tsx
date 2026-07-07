@@ -547,29 +547,29 @@ export default function DashboardPage() {
               <form onSubmit={handleCreateIncident} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Category</label>
-                    <select value={newIncident.category} onChange={e => setNewIncident(p => ({ ...p, category: e.target.value }))} className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none">
+                    <label htmlFor="incCategory" className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Category</label>
+                    <select id="incCategory" value={newIncident.category} onChange={e => setNewIncident(p => ({ ...p, category: e.target.value }))} className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none">
                       {['Medical', 'Fire', 'Security', 'Lost Child', 'Evacuation', 'Info'].map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Severity</label>
-                    <select value={newIncident.severity} onChange={e => setNewIncident(p => ({ ...p, severity: e.target.value }))} className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none">
+                    <label htmlFor="incSeverity" className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Severity</label>
+                    <select id="incSeverity" value={newIncident.severity} onChange={e => setNewIncident(p => ({ ...p, severity: e.target.value }))} className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none">
                       {['Low', 'Medium', 'High'].map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Location Zone</label>
-                  <input required value={newIncident.location_zone} onChange={e => setNewIncident(p => ({ ...p, location_zone: e.target.value }))} placeholder="e.g. North Stands" className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none" />
+                  <label htmlFor="incLocation" className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Location Zone</label>
+                  <input id="incLocation" required value={newIncident.location_zone} onChange={e => setNewIncident(p => ({ ...p, location_zone: e.target.value }))} placeholder="e.g. North Stands" className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Description</label>
-                  <textarea required value={newIncident.description} onChange={e => setNewIncident(p => ({ ...p, description: e.target.value }))} rows={3} placeholder="Describe threat parameters..." className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none resize-none" />
+                  <label htmlFor="incDesc" className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Description</label>
+                  <textarea id="incDesc" required value={newIncident.description} onChange={e => setNewIncident(p => ({ ...p, description: e.target.value }))} rows={3} placeholder="Describe threat parameters..." className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none resize-none" />
                 </div>
                 <div>
-                  <label className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Reporter Code</label>
-                  <input required value={newIncident.reporter_name} onChange={e => setNewIncident(p => ({ ...p, reporter_name: e.target.value }))} placeholder="e.g. Staff-04" className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none" />
+                  <label htmlFor="incReporter" className="text-[10px] uppercase font-black text-slate-500 mb-1 block">Reporter Code</label>
+                  <input id="incReporter" required value={newIncident.reporter_name} onChange={e => setNewIncident(p => ({ ...p, reporter_name: e.target.value }))} placeholder="e.g. Staff-04" className="w-full px-3 py-2 bg-white border-4 border-black text-xs font-bold focus:outline-none" />
                 </div>
                 <button type="submit" className="w-full py-2.5 bg-[#FF6B6B] border-4 border-black text-xs font-black uppercase text-white shadow-neo-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all cursor-pointer">
                   🚨 Broadcast Alert — AI Triggered
