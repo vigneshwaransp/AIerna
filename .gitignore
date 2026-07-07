@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.db
+*.sqlite
+
+# Node
+node_modules/
+.next/
+out/
+build/
+.vercel
+*.log
+
+# Environment keys
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

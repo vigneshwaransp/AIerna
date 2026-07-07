@@ -1,0 +1,252 @@
+/* ============================================================
+   AIrena Smart Tournament Operations Platform — Neo-Brutalist Styles
+   ============================================================ */
+
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&display=swap');
+
+/* ---------- Tailwind Directives ---------- */
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* ---------- CSS Custom Properties (High-Contrast Light Canvas) ---------- */
+:root {
+  /* Core Canvas */
+  --bg-primary:   #FFFDF5; /* Cream/Newsprint canvas */
+  --bg-secondary: #FFFFFF; /* High-contrast white */
+  --bg-card:      #FFFFFF;
+  
+  /* Solid Ink */
+  --text-primary:   #000000;
+  --text-secondary: #000000;
+  --text-muted:     #475569;
+  --border-color:   #000000;
+
+  /* Neo-Brutalist Colors */
+  --accent-red:    #FF6B6B; /* Hot Red / Primary Action */
+  --accent-yellow: #FFD93D; /* Vivid Yellow / Secondary Action */
+  --accent-purple: #C4B5FD; /* Soft Violet / Muted Accent */
+  
+  /* Blue / Cyan for info */
+  --accent-blue:   #3b82f6; 
+  --accent-cyan:   #06b6d4;
+  --accent-green:  #10b981;
+
+  /* Hard Shadows offsets */
+  --shadow-sm: 4px 4px 0px 0px #000000;
+  --shadow-md: 8px 8px 0px 0px #000000;
+  --shadow-lg: 12px 12px 0px 0px #000000;
+  
+  /* Transitions */
+  --transition-fast:   100ms ease;
+  --transition-normal: 200ms ease;
+}
+
+/* ---------- Base overrides ---------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 700;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  button {
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* ---------- Neo-Brutalist Utility Classes ---------- */
+@layer components {
+
+  /* ── Tactile Neo Cards ── */
+  .neo-card {
+    background-color: var(--bg-secondary);
+    border: 4px solid var(--border-color);
+    border-radius: 0px !important;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  }
+
+  .neo-card-hover:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px 0px #000000;
+  }
+
+  /* ── Colored BLOCK Headers ── */
+  .neo-header-yellow {
+    background-color: var(--accent-yellow);
+    border-bottom: 4px solid var(--border-color);
+    padding: 1rem;
+    font-weight: 900;
+  }
+  
+  .neo-header-purple {
+    background-color: var(--accent-purple);
+    border-bottom: 4px solid var(--border-color);
+    padding: 1rem;
+    font-weight: 900;
+  }
+
+  .neo-header-red {
+    background-color: var(--accent-red);
+    border-bottom: 4px solid var(--border-color);
+    color: white;
+    padding: 1rem;
+    font-weight: 900;
+  }
+
+  /* ── Mechanical Push Buttons ── */
+  .neo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 0px !important;
+    border: 4px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .neo-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px #000000;
+  }
+
+  .neo-btn-primary {
+    background-color: var(--accent-red);
+    color: #ffffff;
+  }
+  .neo-btn-primary:hover {
+    background-color: #ff5252;
+  }
+
+  .neo-btn-secondary {
+    background-color: var(--accent-yellow);
+    color: #000000;
+  }
+  .neo-btn-secondary:hover {
+    background-color: #fdd017;
+  }
+
+  .neo-btn-muted {
+    background-color: var(--accent-purple);
+    color: #000000;
+  }
+  .neo-btn-muted:hover {
+    background-color: #b1a0fd;
+  }
+
+  .neo-btn-outline {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  .neo-btn-outline:hover {
+    background-color: #f3f4f6;
+  }
+
+  /* ── Interactive Inputs ── */
+  .neo-input {
+    width: 100%;
+    background-color: #ffffff;
+    border: 4px solid var(--border-color);
+    border-radius: 0px !important;
+    padding: 0.75rem 1rem;
+    font-weight: 700;
+    color: #000000;
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .neo-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .neo-input:focus {
+    outline: none;
+    background-color: var(--accent-yellow);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Stickers and Badges ── */
+  .neo-badge-pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 2px solid var(--border-color);
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 9999px !important;
+    box-shadow: 2px 2px 0px 0px #000000;
+  }
+
+  .neo-badge-square {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border: 3px solid var(--border-color);
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    border-radius: 0px !important;
+    box-shadow: 3px 3px 0px 0px #000000;
+  }
+
+  /* ── Halftone Dot Grid ── */
+  .bg-dot-pattern {
+    background-size: 30px 30px;
+    background-image: radial-gradient(circle, #000000 1.5px, transparent 1.5px);
+    opacity: 0.05;
+  }
+
+  /* ── Thin Custom scrollbar ── */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 0px;
+  }
+
+  .animate-spin-slow {
+    animation: spin 12s linear infinite;
+  }
+}
