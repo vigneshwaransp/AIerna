@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base, get_db
 from app.main import app
 from app.models import User, Zone, Incident
+from app.auth import hash_password
 
 # Create in-memory database for testing
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -29,7 +30,7 @@ def run_around_tests():
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     # Seed minimal test data
-    admin = User(username="test_admin", hashed_password="password", role="Admin")
+    admin = User(username="test_admin", hashed_password=hash_password("password"), role="Admin")
     zone = Zone(name="Test Gate A", safe_capacity=1000, current_capacity=100, coordinate_x=10, coordinate_y=10)
     db.add(admin)
     db.add(zone)
@@ -133,3 +134,75 @@ def test_translate_announcements():
     data = response.json()
     assert "translations_json" in data
     assert "Hindi" in data["translations_json"]
+
+def test_update_incident():
+    # Create incident first
+    response = client.post("/api/incidents", json={
+        "category": "Medical",
+        "description": "Spectator collapsed.",
+        "location_zone": "Test Gate A",
+        "severity": "High",
+        "reporter_name": "Volunteer-1"
+    })
+    inc_id = response.json()["id"]
+    
+    # Update incident
+    patch_res = client.patch(f"/api/incidents/{inc_id}", json={
+        "status": "In Progress",
+        "assigned_responder": "Med-B"
+    })
+    assert patch_res.status_code == 200
+    data = patch_res.json()
+    assert data["status"] == "In Progress"
+    assert data["assigned_responder"] == "Med-B"
+
+def test_get_announcements():
+    # Fetch announcements list
+    response = client.get("/api/announcements")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
+
+def test_lost_persons():
+    # Create lost person report
+    post_res = client.post("/api/lost-persons", json={
+        "name": "Alex",
+        "age": 10,
+        "description": "Blue cap, tall",
+        "clothing": "Blue cap, white t-shirt",
+        "last_seen_location": "Test Gate A",
+        "last_seen_time": "12:00 PM"
+    })
+    assert post_res.status_code == 200
+    data = post_res.json()
+    assert data["name"] == "Alex"
+    assert data["status"] == "Missing"
+    
+    # Fetch lost persons
+    get_res = client.get("/api/lost-persons")
+    assert get_res.status_code == 200
+    assert len(get_res.json()) >= 1
+
+def test_notifications():
+    # Create notification
+    post_res = client.post("/api/notifications", json={
+        "title": "Alert Test",
+        "message": "This is a test notification",
+        "type": "Push",
+        "recipient_role": "Organizer"
+    })
+    assert post_res.status_code == 200
+    data = post_res.json()
+    assert data["title"] == "Alert Test"
+    
+    # Fetch notifications
+    get_res = client.get("/api/notifications")
+    assert get_res.status_code == 200
+    assert len(get_res.json()) >= 1
+
+def test_websocket():
+    with client.websocket_connect("/ws/telemetry") as websocket:
+        data = websocket.receive_json()
+        assert data["type"] == "INIT"
+        websocket.send_text("ping")
+        data = websocket.receive_json()
+        assert data["type"] == "HEARTBEAT"

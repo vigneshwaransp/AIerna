@@ -1,5 +1,6 @@
 import os
 import datetime
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, WebSocket, WebSocketDisconnect, BackgroundTasks, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -19,29 +20,48 @@ from .schemas import (
 )
 from .mock_data import seed_db
 from . import ai_engine
+from .auth import hash_password, verify_password
 
 # Initialize database schemas
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="AIrena Tournament Operations Backend", version="1.0.0")
-
-# Enable CORS for Next.js frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Seed database on startup
-@app.on_event("startup")
-def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Seed database on startup
     db = next(get_db())
     try:
         seed_db(db)
     finally:
         db.close()
+    yield
+
+app = FastAPI(title="AIrena Tournament Operations Backend", version="1.0.0", lifespan=lifespan)
+
+# Enable CORS for Next.js frontend with restricted origins
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Inject security headers middleware
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 # WebSocket Manager for Real-Time Telemetry
 class ConnectionManager:
@@ -77,7 +97,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = await websocket.receive_text()
             # If the client sends any ping, respond with a telemetry heartbeat
-            await websocket.send_json({"type": "HEARTBEAT", "timestamp": str(datetime.datetime.utcnow())})
+            await websocket.send_json({"type": "HEARTBEAT", "timestamp": str(datetime.datetime.now(datetime.timezone.utc))})
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
@@ -90,7 +110,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Username already exists")
     new_user = User(
         username=user.username,
-        hashed_password=user.password,  # Stored plain/hashed for local convenience
+        hashed_password=hash_password(user.password),
         role=user.role,
         preferred_language=user.preferred_language
     )
@@ -101,10 +121,10 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/api/auth/login", response_model=UserResponse)
 def login(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.username == user.username, User.hashed_password == user.password).first()
-    if not db_user:
+    db_user = db.query(User).filter(User.username == user.username).first()
+    if not db_user or not verify_password(db_user.hashed_password, user.password):
         raise HTTPException(status_code=400, detail="Invalid username or password")
-    db_user.last_active = datetime.datetime.utcnow()
+    db_user.last_active = datetime.datetime.now(datetime.timezone.utc)
     db.commit()
     return db_user
 
@@ -147,7 +167,7 @@ async def simulate_zone_crowd(zone_id: int, current_capacity: int, db: Session =
         "ai_alert": ai_advice.get("alert"),
         "ai_recommendation": ai_advice.get("recommendation"),
         "alternate_routes": ai_advice.get("alternate_routes"),
-        "timestamp": str(datetime.datetime.utcnow())
+        "timestamp": str(datetime.datetime.now(datetime.timezone.utc))
     }
     
     # If high risk, create a push notification automatically

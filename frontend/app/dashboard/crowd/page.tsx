@@ -149,7 +149,8 @@ export default function CrowdManagementPage() {
                 {/* Grid Overlay */}
                 <div className="absolute inset-0 bg-dot-pattern opacity-[0.06]" />
                 
-                <svg className="w-full h-full opacity-45 absolute inset-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <svg className="w-full h-full opacity-45 absolute inset-0" viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Venue blueprint showing zone capacity nodes">
+                  <title>Venue Density Blueprint</title>
                   <ellipse cx="50" cy="50" rx="40" ry="30" fill="none" stroke="black" strokeWidth="1" />
                   <ellipse cx="50" cy="50" rx="30" ry="20" fill="none" stroke="black" strokeWidth="0.75" />
                   <line x1="50" y1="10" x2="50" y2="90" stroke="black" strokeWidth="0.5" strokeDasharray="3" />
@@ -168,7 +169,8 @@ export default function CrowdManagementPage() {
                       whileHover={{ scale: 1.15 }}
                       onClick={() => handleSimulate(z.id, 200)}
                     >
-                      <svg width="28" height="28" viewBox="0 0 24 24" className="overflow-visible">
+                      <svg width="28" height="28" viewBox="0 0 24 24" className="overflow-visible" role="img" aria-label={`Density indicator for ${z.name}: ${z.risk_level} risk`}>
+                        <title>{`Density Indicator for ${z.name}`}</title>
                         {z.risk_level === 'High' && (
                           <circle cx="12" cy="12" r="16" fill="none" className="stroke-[#FF6B6B] animate-ping opacity-70" strokeWidth="2" />
                         )}
@@ -196,7 +198,8 @@ export default function CrowdManagementPage() {
               </div>
 
               <div className="w-full h-32">
-                <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none">
+                <svg className="w-full h-full" viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="Line chart showing 24-hour crowd density forecast">
+                  <title>24-Hour Queue Forecast Chart</title>
                   {/* Grid Lines */}
                   <line x1="0" y1="10" x2="100" y2="10" stroke="black" strokeWidth="0.25" opacity="0.2" />
                   <line x1="0" y1="20" x2="100" y2="20" stroke="black" strokeWidth="0.25" opacity="0.2" />

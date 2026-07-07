@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 
@@ -19,8 +19,7 @@ class UserResponse(UserBase):
     id: int
     last_active: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Zone Schemas
 class ZoneBase(BaseModel):
@@ -34,8 +33,7 @@ class ZoneBase(BaseModel):
 class ZoneResponse(ZoneBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ZoneUpdate(BaseModel):
     current_capacity: Optional[int] = None
@@ -62,8 +60,7 @@ class IncidentResponse(IncidentBase):
     nearest_resources: Optional[List[Dict[str, Any]]] = None
     safe_routes: Optional[List[Dict[str, Any]]] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class IncidentUpdate(BaseModel):
     status: Optional[str] = None
@@ -85,8 +82,7 @@ class VolunteerAssignmentResponse(VolunteerAssignmentBase):
     status: str
     assigned_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Lost Person Schemas
 class SightingCreate(BaseModel):
@@ -112,8 +108,7 @@ class LostPersonResponse(LostPersonBase):
     timeline_json: Optional[List[Dict[str, Any]]] = None
     search_recommendations: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Announcement Schemas
 class AnnouncementBase(BaseModel):
@@ -130,8 +125,7 @@ class AnnouncementResponse(AnnouncementBase):
     translations_json: Optional[Dict[str, str]] = None
     timestamp: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Notification Schemas
 class NotificationBase(BaseModel):
@@ -148,8 +142,7 @@ class NotificationResponse(NotificationBase):
     is_read: bool
     timestamp: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 # AI Chat and Support Schemas
 class AIChatQuery(BaseModel):

@@ -86,7 +86,8 @@ export default function SmartNavigationPage() {
               <div className="relative w-full aspect-[4/3] bg-[#FFFDF5] border-4 border-black overflow-hidden">
                 <div className="absolute inset-0 bg-dot-pattern opacity-[0.06]" />
 
-                <svg className="w-full h-full" viewBox="0 0 100 100">
+                <svg className="w-full h-full" viewBox="0 0 100 100" role="img" aria-label="Interactive indoor navigation map blueprint">
+                  <title>Interactive Venue Blueprint Map</title>
                   {/* Outer boundaries */}
                   <rect x="5" y="5" width="90" height="90" fill="none" stroke="black" strokeWidth="3.5" />
                   <ellipse cx="50" cy="50" rx="35" ry="25" fill="none" stroke="black" strokeWidth="2.5" />

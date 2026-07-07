@@ -11,7 +11,7 @@ class User(Base):
     hashed_password = Column(String, nullable=False)
     role = Column(String, nullable=False)  # Fan, Volunteer, Organizer, Security, Medical, Admin
     preferred_language = Column(String, default="English")  # English, Hindi, Tamil, Telugu, Kannada, Malayalam, French, Japanese
-    last_active = Column(DateTime, default=datetime.datetime.utcnow)
+    last_active = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
 class Zone(Base):
     __tablename__ = "zones"
@@ -33,7 +33,7 @@ class Incident(Base):
     location_zone = Column(String, nullable=False)
     status = Column(String, default="Active")  # Active, In Progress, Resolved
     severity = Column(String, default="Medium")  # Low, Medium, High
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc), index=True)
     reporter_name = Column(String, nullable=False)
     assigned_responder = Column(String, nullable=True)
     ai_summary = Column(Text, nullable=True)
@@ -49,7 +49,7 @@ class VolunteerAssignment(Base):
     zone_id = Column(Integer, ForeignKey("zones.id"), nullable=False)
     description = Column(Text, nullable=False)
     status = Column(String, default="Assigned")  # Assigned, Completed, Cancelled
-    assigned_at = Column(DateTime, default=datetime.datetime.utcnow)
+    assigned_at = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc))
 
     volunteer = relationship("User", foreign_keys=[volunteer_id])
     zone = relationship("Zone", foreign_keys=[zone_id])
@@ -65,7 +65,7 @@ class LostPerson(Base):
     last_seen_location = Column(String, nullable=False)
     last_seen_time = Column(String, nullable=False)
     status = Column(String, default="Missing")  # Missing, Found
-    reported_at = Column(DateTime, default=datetime.datetime.utcnow)
+    reported_at = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc), index=True)
     timeline_json = Column(JSON, nullable=True)  # Sighting events list
     search_recommendations = Column(Text, nullable=True)  # AI-generated recommendation
 
@@ -78,7 +78,7 @@ class Announcement(Base):
     target_role = Column(String, default="All")  # All, Fan, Volunteer, Security, Medical, Organizer
     original_lang = Column(String, default="English")
     translations_json = Column(JSON, nullable=True)  # Key-value dictionary of language: text
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc), index=True)
 
 class Notification(Base):
     __tablename__ = "notifications"
@@ -89,4 +89,4 @@ class Notification(Base):
     type = Column(String, nullable=False)  # Push, SMS, Email, Public
     recipient_role = Column(String, default="All")
     is_read = Column(Boolean, default=False)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.datetime.now(datetime.timezone.utc), index=True)

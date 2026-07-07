@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from .models import User, Zone, Incident, VolunteerAssignment, Announcement, Notification
+from .auth import hash_password
 import datetime
 
 def seed_db(db: Session):
@@ -9,17 +10,15 @@ def seed_db(db: Session):
         
     print("Seeding database...")
     
-    # 1. Seed Users (with password 'password' hashed or mocked)
-    # Since it's a prototype/enterprise backend, we will store passwords simply or plain text for easy API check,
-    # but represent it as 'hashed_password' to reflect production safety.
+    # 1. Seed Users (with password 'password' hashed)
     users = [
-        User(username="admin", hashed_password="password", role="Admin", preferred_language="English"),
-        User(username="organizer", hashed_password="password", role="Organizer", preferred_language="English"),
-        User(username="volunteer1", hashed_password="password", role="Volunteer", preferred_language="English"),
-        User(username="volunteer2", hashed_password="password", role="Volunteer", preferred_language="Hindi"),
-        User(username="security1", hashed_password="password", role="Security", preferred_language="English"),
-        User(username="medical1", hashed_password="password", role="Medical", preferred_language="French"),
-        User(username="fan1", hashed_password="password", role="Fan", preferred_language="Japanese"),
+        User(username="admin", hashed_password=hash_password("password"), role="Admin", preferred_language="English"),
+        User(username="organizer", hashed_password=hash_password("password"), role="Organizer", preferred_language="English"),
+        User(username="volunteer1", hashed_password=hash_password("password"), role="Volunteer", preferred_language="English"),
+        User(username="volunteer2", hashed_password=hash_password("password"), role="Volunteer", preferred_language="Hindi"),
+        User(username="security1", hashed_password=hash_password("password"), role="Security", preferred_language="English"),
+        User(username="medical1", hashed_password=hash_password("password"), role="Medical", preferred_language="French"),
+        User(username="fan1", hashed_password=hash_password("password"), role="Fan", preferred_language="Japanese"),
     ]
     for u in users:
         db.add(u)
@@ -49,7 +48,7 @@ def seed_db(db: Session):
             location_zone="North Stands (Row A-K)",
             status="In Progress",
             severity="High",
-            timestamp=datetime.datetime.utcnow() - datetime.timedelta(minutes=12),
+            timestamp=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=12),
             reporter_name="Volunteer-1 (John)",
             assigned_responder="Med-A",
             ai_summary="Cardiac warning alert in North Stands. Emergency access protocol engaged.",
@@ -63,7 +62,7 @@ def seed_db(db: Session):
             location_zone="Food Court Area",
             status="Active",
             severity="Medium",
-            timestamp=datetime.datetime.utcnow() - datetime.timedelta(minutes=8),
+            timestamp=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=8),
             reporter_name="Parent (Ananya)",
             assigned_responder="Security-Team 3",
             ai_summary="Missing child Aarav (6yo, red t-shirt) reported in Food Court quadrant.",
@@ -77,7 +76,7 @@ def seed_db(db: Session):
             location_zone="Gate D (West Entrance)",
             status="Active",
             severity="High",
-            timestamp=datetime.datetime.utcnow() - datetime.timedelta(minutes=5),
+            timestamp=datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=5),
             reporter_name="Security Guard (Robert)",
             assigned_responder="Security-Team 1",
             ai_summary="Unattended package at Gate D column B12. Perimeter safety cordon requested.",

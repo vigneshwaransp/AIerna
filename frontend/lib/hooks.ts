@@ -42,6 +42,7 @@ export function useWebSocket(url: string): UseWebSocketReturn {
   const retryCount   = useRef<number>(0);
   const retryTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isMounted    = useRef<boolean>(true);
+  const connectRef   = useRef<() => void>(() => {});
 
   const connect = useCallback(() => {
     if (!isMounted.current) return;
@@ -77,7 +78,7 @@ export function useWebSocket(url: string): UseWebSocketReturn {
       retryCount.current += 1;
 
       retryTimeout.current = setTimeout(() => {
-        if (isMounted.current) connect();
+        if (isMounted.current) connectRef.current();
       }, delay);
     };
 
@@ -88,8 +89,12 @@ export function useWebSocket(url: string): UseWebSocketReturn {
   }, [url]);
 
   useEffect(() => {
+    connectRef.current = connect;
+  }, [connect]);
+
+  useEffect(() => {
     isMounted.current = true;
-    connect();
+    connectRef.current();
 
     return () => {
       isMounted.current = false;
